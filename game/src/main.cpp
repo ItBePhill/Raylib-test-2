@@ -12,11 +12,14 @@ Bugs:
 - 
 TODO:
 - Button Class (uses std::function to call a passed in function for the button, as well as running logic for changing texture) /
+	* Tooltips
 - NPC Class (basically just an image and dialogue) 
 - Managers
 	* Dialogue Manager /
 	* General Game Manager (e.g. what scene are we on, and what level are we on)
-- Scenes (Each scene consists of an image, buttons and objects e.g. npcs) 
+- Scenes (Each scene consists of an image, buttons and objects e.g. npcs) /
+	* (general scene loading without files) /
+		- 
 - Maps (A collection of scenes with information on how they connect, also contains a script for the map specific logic)
 - Menus, e.g. a title menu, for starting a game with a map selection screen
 

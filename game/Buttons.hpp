@@ -6,6 +6,7 @@
 #include <raylib.h>
 #include <vector>
 #include <functional>
+#include <string>
 
 namespace Buttons {
 	class EmptyButton {
@@ -20,6 +21,8 @@ namespace Buttons {
 		bool mHighlight = false;
 		//whether to show debug colours, red, green and blue
 		bool mDebugColours = false;
+		//doesnt show tooltip if empty
+		std::string mToolTip = "";
 		//debug colours
 		const std::vector<Color> mColours = {RED, GREEN, BLUE};
 		//the current colour
@@ -28,7 +31,7 @@ namespace Buttons {
 		std::function<void(bool)> mCallback;
 	public:
 		//constructor
-		EmptyButton(Rectangle Rect, std::function<void(bool)> Callback, bool debugColours);
+		EmptyButton(Rectangle Rect, std::function<void(bool)> Callback, bool debugColours, std::string mToolTip);
 		//draw function
 		void Draw(Vector2 mousePos);
 		//mPowered setter
@@ -51,11 +54,13 @@ namespace Buttons {
 		bool mPowered = false;
 		//whether this button will be highlighted when you hover over it
 		bool mHighlight = false;
+		//
+		std::string mToolTip = "";
 		//callback function
 		std::function<void(bool)> mCallback;
 	public:
 		//constructor
-		TextureButton(Rectangle Rect, std::vector<Texture2D> Textures, std::function<void(bool)> Callback, bool Highlight, bool Toggle, int PoweredTimerMax);
+		TextureButton(Rectangle Rect, std::vector<Texture2D> Textures, std::function<void(bool)> Callback, bool Highlight, bool Toggle, int PoweredTimerMax, std::string mToolTip);
 		//draw function
 		void Draw(Vector2 mousePos);
 		//mPowered setter

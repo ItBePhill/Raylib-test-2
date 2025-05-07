@@ -2,6 +2,7 @@
 #include <functional>
 #include <iostream>
 #include <vector>
+#include <string>
 #include <Buttons.hpp>
 using std::vector;
 /// <summary>
@@ -11,7 +12,7 @@ using std::vector;
 	/// <param name="Textures">{Not Pressed, Pressed, Hovered}</param>
 	/// <param name="Callback">A function the button will call when pressed P.S if a button is a toggle this will be called every frame that the button is powered</param>
 	/// <param name="Toggle">Whether the button will be a toggle</param>
-Buttons::TextureButton::TextureButton(Rectangle Rect, vector<Texture2D> Textures, std::function<void(bool)> Callback, bool Highlight = true, bool Toggle = false, int PoweredTimerMax = -1) : mRect(Rect), mTextures(Textures), mCallback(Callback), mToggle(Toggle), mHighlight(Highlight), mPoweredTimerMax(PoweredTimerMax) {
+Buttons::TextureButton::TextureButton(Rectangle Rect, vector<Texture2D> Textures, std::function<void(bool)> Callback, bool Highlight = true, bool Toggle = false, int PoweredTimerMax = -1, std::string Tooltip = "") : mRect(Rect), mTextures(Textures), mCallback(Callback), mToggle(Toggle), mHighlight(Highlight), mPoweredTimerMax(PoweredTimerMax), mToolTip(Tooltip) {
 	mRectTexture = mTextures[0];
 }
 void Buttons::TextureButton::SetButtonPower(bool Powered) {
@@ -73,6 +74,11 @@ void Buttons::EmptyButton::Draw(Vector2 mousePos) {
 		if (!mToggle) {
 			if (CheckCollisionPointRec(mousePos, mRect) && !IsMouseButtonPressed(0) && mHighlight) {
 				mRectColour = mColours[2];
+				//create tooltip
+				if (mToolTip != "") {
+
+				}
+
 			}
 			else if (CheckCollisionPointRec(mousePos, mRect) && IsMouseButtonPressed(0)) {
 				mPowered = true;
@@ -106,5 +112,5 @@ void Buttons::EmptyButton::Draw(Vector2 mousePos) {
 /// <param name="Rect">{x, y, width, height}</param>
 /// <param name="Callback">A function the button will call when pressed</param>
 /// <param name="debugColours">Colour the buton using red green and blue for debugging purposes</param>
-Buttons::EmptyButton::EmptyButton(Rectangle Rect, std::function<void(bool)> Callback, bool debugColours = false) : mRect(Rect), mCallback(Callback), mDebugColours(debugColours) {
+Buttons::EmptyButton::EmptyButton(Rectangle Rect, std::function<void(bool)> Callback, bool debugColours = false, std::string Tooltip = "") : mRect(Rect), mCallback(Callback), mDebugColours(debugColours), mToolTip(Tooltip) {
 }
