@@ -9,7 +9,7 @@
 / Doing
 // Done
 Bugs:
-- 
+- buttons currently dont show any textures
 TODO:
 - Button Class (uses std::function to call a passed in function for the button, as well as running logic for changing texture) /
 	* Tooltips
@@ -44,15 +44,15 @@ int main() {
 	
 	//initialize the window
 	InitWindow(screenWidth, screenHeight, "penis");
+	Font defaultFont = LoadFont("resources/alagard/alagard.ttf");
 	//textures must be loaded after Window initialization
-	Texture2D buttonPlay = LoadTexture("C:\\Users\\phill\\Pictures\\Sleep Cover.png");
-	Texture2D buttonPause = LoadTexture("C:\\Users\\phill\\Pictures\\Shutdown Cover.png");
-	Buttons::TextureButton testButton2 = Buttons::TextureButton({ 0,0, 100,100 }, {buttonPause, buttonPlay, buttonPlay}, testButtonCallback, false, false, 10);
+	Texture2D buttonTrue = LoadTexture(".\\floor.png");
+	Texture2D buttonFalse = LoadTexture(".\\haydown1.png");
+	Texture2D buttonHighlight = LoadTexture(".\\down4.png");
+	Buttons::TextureButton testButton2 = Buttons::TextureButton(testButtonCallback, defaultFont, { 0,0, 200, 200}, {buttonFalse, buttonTrue, buttonHighlight}, true, false, 5, "Test Button", false);
 	Texture2D backText = LoadTexture("resources/back.png");
 	Texture2D testText = LoadTexture("resources/test.png");
-	Font defaultFont = LoadFont("resources/alagard/alagard.ttf");
-	//set the target fps to 60
-	SetTargetFPS(60);
+	
 
 	Vector2 mousePos = { 0, 0 };
 	//game loop

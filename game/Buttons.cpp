@@ -5,14 +5,26 @@
 #include <string>
 #include <Buttons.hpp>
 using std::vector;
+Font defaultFont = LoadFont("resources/alagard/alagard.ttf");
+Texture2D defaultButtonTrue = LoadTexture(".\\defaultTrue.png");
+Texture2D defaultButtonFalse = LoadTexture(".\\defaultFalse.png");
+Texture2D defaultButtonHighlight = LoadTexture(".\\defaultHighlight.png");
+//load test Button Images
+
+
 /// <summary>
-	/// Creates a Button object
-	/// </summary>
-	/// <param name="Rect">{x, y, width, height}</param>
-	/// <param name="Textures">{Not Pressed, Pressed, Hovered}</param>
-	/// <param name="Callback">A function the button will call when pressed P.S if a button is a toggle this will be called every frame that the button is powered</param>
-	/// <param name="Toggle">Whether the button will be a toggle</param>
-Buttons::TextureButton::TextureButton(Rectangle Rect, vector<Texture2D> Textures, std::function<void(bool)> Callback, bool Highlight = true, bool Toggle = false, int PoweredTimerMax = -1, std::string Tooltip = "") : mRect(Rect), mTextures(Textures), mCallback(Callback), mToggle(Toggle), mHighlight(Highlight), mPoweredTimerMax(PoweredTimerMax), mToolTip(Tooltip) {
+/// Creates a Button Object
+/// </summary>
+/// <param name="Callback">The function that will be called when the button is clicked</param>
+/// <param name="font">The font to use for the tooltip</param>
+/// <param name="Rect">size and position of the button</param>
+/// <param name="Textures">{Not clicked, clicked, highlight}</param>
+/// <param name="Highlight">whether to use highlight</param>
+/// <param name="Toggle">whether this button is a toggle</param>
+/// <param name="PoweredTimerMax">how long the button should stay powered for, (will only call callback once on a non toggle)</param>
+/// <param name="Tooltip">a tooltip shown to the bottom right of the cursor</param>
+/// <param name="Empty">whether the button should render textures</param>
+Buttons::TextureButton::TextureButton(std::function<void(bool)> Callback, Font font = defaultFont, Rectangle Rect = { 0,0,100,100 }, std::vector<Texture2D> Textures = { defaultButtonFalse, defaultButtonTrue, defaultButtonHighlight }, bool Highlight = false, bool Toggle = false, int PoweredTimerMax = -1, std::string Tooltip = "", bool Empty = false) : mCallback(Callback), mFont(font), mRect(Rect), mTextures(Textures), mToggle(Toggle), mHighlight(Highlight), mPoweredTimerMax(PoweredTimerMax), mToolTip(Tooltip), mEmpty(Empty) {
 	mRectTexture = mTextures[0];
 }
 void Buttons::TextureButton::SetButtonPower(bool Powered) {
@@ -59,58 +71,16 @@ void Buttons::TextureButton::Draw(Vector2 mousePos) {
 			}
 		}
 	}
-	DrawTexturePro(mRectTexture, { 0,0, float(mRectTexture.width), float(mRectTexture.height) }, mRect, { .0f,.0f }, .0f, WHITE);
-}
-
-
-void Buttons::EmptyButton::SetButtonPower(bool Powered) {
-	mPowered = Powered;
-}
-//Draw the button to the screen
-void Buttons::EmptyButton::Draw(Vector2 mousePos) {
-	
-	//this button should not be a toggle
-	if (mDebugColours) {
-		if (!mToggle) {
-			if (CheckCollisionPointRec(mousePos, mRect) && !IsMouseButtonPressed(0) && mHighlight) {
-				mRectColour = mColours[2];
-				//create tooltip
-				if (mToolTip != "") {
-
-				}
-
-			}
-			else if (CheckCollisionPointRec(mousePos, mRect) && IsMouseButtonPressed(0)) {
-				mPowered = true;
-				mRectColour = mColours[1];
-				mCallback(mPowered);
-
-			}
-			else {
-				mRectColour = mColours[0];
-				mPowered = false;
-			}
-		}
-		DrawRectangle(mRect.x, mRect.y, mRect.width, mRect.height, mRectColour);
+	if (!mEmpty) {
+		DrawTexturePro(mRectTexture, { 0,0, float(mRectTexture.width), float(mRectTexture.height) }, mRect, { .0f,.0f }, .0f, WHITE);
 	}
-	else {
-		if (!mToggle) {
-			if (CheckCollisionPointRec(mousePos, mRect) && IsMouseButtonPressed(0)) {
-				mPowered = true;
-				mCallback(mPowered);
-			}
-			else {
-				mPowered = false;
-			}
-		}
-		DrawRectangle(mRect.x, mRect.y, mRect.width, mRect.height, { 0,0,0,0 });
+	if (CheckCollisionPointRec(mousePos, mRect) && mToolTip != "") {
+		//tooltip is enabled
+		//display tooltip to the bottom right of the cursor
+		//Calculate Where the tooltip will be
+		Vector2 toolTipPos;
+		toolTipPos.x = mousePos.x + 20;
+		toolTipPos.y = mousePos.y + 20;
+		DrawTextEx(mFont, mToolTip.c_str(), toolTipPos, 20, 5, WHITE);
 	}
-}
-/// <summary>
-/// an Empty Button (no image), can be used for stuff like scene transitions
-/// </summary>
-/// <param name="Rect">{x, y, width, height}</param>
-/// <param name="Callback">A function the button will call when pressed</param>
-/// <param name="debugColours">Colour the buton using red green and blue for debugging purposes</param>
-Buttons::EmptyButton::EmptyButton(Rectangle Rect, std::function<void(bool)> Callback, bool debugColours = false, std::string Tooltip = "") : mRect(Rect), mCallback(Callback), mDebugColours(debugColours), mToolTip(Tooltip) {
 }

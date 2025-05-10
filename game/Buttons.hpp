@@ -9,34 +9,6 @@
 #include <string>
 
 namespace Buttons {
-	class EmptyButton {
-	private:
-		//invisible rectangle used for collision detection
-		Rectangle mRect;
-		//whether this button is a toggle
-		bool mToggle = false;
-		//whether the button is powered
-		bool mPowered = false;
-		//whether this button will be highlighted when you hover over it
-		bool mHighlight = false;
-		//whether to show debug colours, red, green and blue
-		bool mDebugColours = false;
-		//doesnt show tooltip if empty
-		std::string mToolTip = "";
-		//debug colours
-		const std::vector<Color> mColours = {RED, GREEN, BLUE};
-		//the current colour
-		Color mRectColour = mColours[0];
-		//callback function
-		std::function<void(bool)> mCallback;
-	public:
-		//constructor
-		EmptyButton(Rectangle Rect, std::function<void(bool)> Callback, bool debugColours, std::string mToolTip);
-		//draw function
-		void Draw(Vector2 mousePos);
-		//mPowered setter
-		void SetButtonPower(bool Powered);
-	};
 	class TextureButton {
 	private:
 		//invisible rectangle used for collision detection
@@ -54,14 +26,19 @@ namespace Buttons {
 		bool mPowered = false;
 		//whether this button will be highlighted when you hover over it
 		bool mHighlight = false;
-		//
+		//tooltip to draw next to cursor
 		std::string mToolTip = "";
+		//whether the button should ignore any textures (will ignore )
+		bool mEmpty;
+		//Tooltip Font
+		Font mFont;
+
 		//callback function
 		std::function<void(bool)> mCallback;
 	public:
 		//constructor
-		TextureButton(Rectangle Rect, std::vector<Texture2D> Textures, std::function<void(bool)> Callback, bool Highlight, bool Toggle, int PoweredTimerMax, std::string mToolTip);
-		//draw function
+		TextureButton(std::function<void(bool)> Callback, Font font,  Rectangle Rect, std::vector<Texture2D> Textures, bool Highlight, bool Toggle, int PoweredTimerMax, std::string mToolTip, bool Empty);
+		//draw function0
 		void Draw(Vector2 mousePos);
 		//mPowered setter
 		void SetButtonPower(bool powered);
